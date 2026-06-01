@@ -41,6 +41,28 @@ const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 export const metadata: Metadata = {
   title: "Raymond Gray | Remote Support Services",
   description: "Reliable remote support for SMEs worldwide — spanning back-office administration, customer service operations, and IT helpdesk coverage.",
+  openGraph: {
+    title: "Raymond Gray | Remote Support Services",
+    description: "Reliable remote support for SMEs worldwide — spanning back-office administration, customer service operations, and IT helpdesk coverage.",
+    url: "https://remotesupport.raymond-gray.org",
+    siteName: "Raymond Gray",
+    images: [
+      {
+        url: "/images/hero-bg.png", // Will be relative to domain
+        width: 1200,
+        height: 630,
+        alt: "Raymond Gray Remote Support Services",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Raymond Gray | Remote Support Services",
+    description: "Reliable remote support for SMEs worldwide.",
+    images: ["/images/hero-bg.png"],
+  },
   icons: {
     icon: [
       { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },

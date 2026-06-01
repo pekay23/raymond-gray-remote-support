@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send } from "lucide-react";
 import Image from "next/image";
 
 export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [formLoadedAt, setFormLoadedAt] = useState<number>(0);
+
+  useEffect(() => {
+    setFormLoadedAt(Date.now());
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,7 +23,7 @@ export function ContactSection() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, formLoadedAt }),
       });
 
       if (res.ok) {
@@ -71,12 +76,22 @@ export function ContactSection() {
               <h3 className="font-display font-semibold text-2xl text-rg-navy mb-6">Request Support</h3>
               
               {status === "success" ? (
-                <div className="bg-green-50 text-green-800 p-6 rounded-lg text-center border border-green-200">
-                  <p className="font-medium mb-2">Message Sent Successfully!</p>
-                  <p className="text-sm text-green-700">We&apos;ll get back to you shortly.</p>
+                <div className="bg-green-50 text-green-800 p-8 rounded-lg text-center border border-green-200 flex flex-col items-center justify-center h-full">
+                  <p className="font-display font-medium text-xl mb-3">Message Sent Successfully!</p>
+                  <p className="text-sm text-green-700 mb-6">We&apos;ll get back to you shortly.</p>
+                  <button 
+                    onClick={() => setStatus("idle")}
+                    className="px-6 py-2.5 bg-white border border-green-300 text-green-800 font-medium rounded-md hover:bg-green-100 transition-colors"
+                  >
+                    Send Another Message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="honeypot">Leave this field empty</label>
+                    <input type="text" id="honeypot" name="honeypot" tabIndex={-1} autoComplete="off" />
+                  </div>
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-rg-ink-soft mb-1">Full Name</label>
                     <input required type="text" id="name" name="name" className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
@@ -99,12 +114,15 @@ export function ContactSection() {
                   )}
                   
                   <button
-                    disabled={status === "loading"}
                     type="submit"
-                    className="w-full py-3 px-6 bg-rg-accent hover:bg-rg-accent-deep text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                    disabled={status === "loading"}
+                    className="w-full py-3 px-6 bg-rg-accent text-white font-medium rounded-md hover:bg-rg-accent-deep transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
                   >
-                    {status === "loading" ? "Sending..." : "Send Message"}
-                    {status !== "loading" && <Send size={18} />}
+                    {status === "loading" ? "Sending..." : (
+                      <>
+                        Send Message <Send size={18} />
+                      </>
+                    )}
                   </button>
                 </form>
               )}

@@ -48,6 +48,7 @@ export function Header() {
             width={48}
             height={48}
             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain transition-all"
+            aria-hidden="true"
           />
           <span className={`font-display font-medium text-sm sm:text-base md:text-lg tracking-tight transition-colors ${isScrolled || isMobileMenuOpen ? "text-rg-navy" : "text-white drop-shadow-sm"}`}>
             Raymond <span className={`font-normal transition-colors ${isScrolled || isMobileMenuOpen ? "text-rg-ink-subtle" : "text-white/80"}`}>Gray <span className="hidden sm:inline">| Remote Support</span></span>

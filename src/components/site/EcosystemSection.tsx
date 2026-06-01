@@ -3,11 +3,14 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useInView } from "framer-motion";
 import { experienceProfile, representativeList } from "@/lib/profile-content";
 import { LogoCycleGrid } from "@/components/ui/LogoCycleGrid";
 
 export function EcosystemSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const isVideoInView = useInView(videoContainerRef, { once: true, margin: "200px" });
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -60,17 +63,23 @@ export function EcosystemSection() {
 
       </div>
 
-      <div className="w-full relative py-16 mt-16 border-y border-rg-line-soft overflow-hidden">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          poster="/logos/logosBG.png"
-          className="absolute inset-0 w-full h-full object-cover z-0 opacity-100"
-        >
-          <source src="/logos/logosBGVideo.mp4" type="video/mp4" />
-        </video>
+      <div 
+        ref={videoContainerRef}
+        className="w-full relative py-16 mt-16 border-y border-rg-line-soft overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: "url('/logos/logosBG.png')" }}
+      >
+        {isVideoInView && (
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            poster="/logos/logosBG.png"
+            className="absolute inset-0 w-full h-full object-cover z-0 opacity-100"
+          >
+            <source src="/logos/logosBGVideo.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="relative z-10 px-6">
           <div className="client-grid mx-auto w-full max-w-[100vw] sm:max-w-7xl">
             <LogoCycleGrid logos={representativeList} />
