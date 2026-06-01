@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rg-bg: var(--rg-bg);
+  --color-rg-bg-2: var(--rg-bg-2);
+  --color-rg-bg-3: var(--rg-bg-3);
+  --color-rg-surface: var(--rg-surface);
+  --color-rg-ink: var(--rg-ink);
+  --color-rg-ink-soft: var(--rg-ink-soft);
+  --color-rg-ink-mute: var(--rg-ink-mute);
+  --color-rg-ink-subtle: var(--rg-ink-subtle);
+  --color-rg-line: var(--rg-line);
+  --color-rg-line-soft: var(--rg-line-soft);
+  --color-rg-line-strong: var(--rg-line-strong);
+  --color-rg-accent: var(--rg-accent);
+  --color-rg-accent-light: var(--rg-accent-light);
+  --color-rg-accent-subtle: var(--rg-accent-subtle);
+  --color-rg-accent-deep: var(--rg-accent-deep);
+  --color-rg-accent-ink: var(--rg-accent-ink);
+  --color-rg-invert-bg: var(--rg-invert-bg);
+  --color-rg-invert-bg-2: var(--rg-invert-bg-2);
+  --color-rg-invert-ink: var(--rg-invert-ink);
+  --color-rg-invert-ink-soft: var(--rg-invert-ink-soft);
+  --color-rg-invert-line: var(--rg-invert-line);
+  --color-rg-accent-2: var(--rg-accent-2);
+  --color-rg-accent-2-light: var(--rg-accent-2-light);
+  --color-rg-accent-2-subtle: var(--rg-accent-2-subtle);
+  --color-rg-accent-2-deep: var(--rg-accent-2-deep);
+  --color-rg-muted: var(--color-teal-50);
+  --color-rg-warm: var(--color-coral-50);
+  --color-rg-navy: var(--color-navy-700);
+  --color-rg-silver: var(--color-silver-200);
+
+  --font-sans: var(--font-poppins), var(--font-poppins-google), var(--font-avenir), var(--font-nunito), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: JetBrains Mono, monospace;
+  --font-display: var(--font-gotham), var(--font-montserrat), "Helvetica Neue", "Arial", sans-serif;
+}
+
+:root {
+  --background: oklch(1.0000 0 0);
+  --foreground: oklch(0.3752 0.0394 256.8467);
+  --card: oklch(1.0000 0 0);
+  --card-foreground: oklch(0.3752 0.0394 256.8467);
+  --popover: oklch(1.0000 0 0);
+  --popover-foreground: oklch(0.3752 0.0394 256.8467);
+  --primary: oklch(0.3752 0.0394 256.8467);
+  --primary-foreground: oklch(1.0000 0 0);
+  --secondary: oklch(0.9686 0.0035 247.8590);
+  --secondary-foreground: oklch(0.3752 0.0394 256.8467);
+  --muted: oklch(0.9686 0.0035 247.8590);
+  --muted-foreground: oklch(0.5403 0.0360 256.8111);
+  --accent: oklch(0.9686 0.0035 247.8590);
+  --accent-foreground: oklch(0.3752 0.0394 256.8467);
+  --destructive: oklch(0.6356 0.2082 25.3782);
+  --destructive-foreground: oklch(0.9848 0 0);
+  --border: oklch(0.9258 0.0132 255.0276);
+  --input: oklch(0.9258 0.0132 255.0276);
+  --ring: oklch(0.3752 0.0394 256.8467);
+  --radius: 0.5rem;
+
+  /* RAYMOND GRAY — BRAND SOURCE OF TRUTH */
+  --color-teal-50: #E0F2F4;
+  --color-teal-100: #B5E4E9;
+  --color-teal-200: #87CED7;
+  --color-teal-300: #52B5C3;
+  --color-teal-400: #2A7A8A;
+  --color-teal-500: #136780;
+  --color-teal-600: #025575;
+  --color-teal-700: #024462;
+  --color-teal-800: #013349;
+  --color-teal-900: #012230;
+  --color-teal-950: #010F17;
+
+  --color-coral-50: #FBECEB;
+  --color-coral-100: #F6D4D2;
+  --color-coral-200: #ECAEAA;
+  --color-coral-300: #E08983;
+  --color-coral-400: #D66F69;
+  --color-coral-500: #C95B55;
+  --color-coral-600: #B14A44;
+  --color-coral-700: #8E3A35;
+  --color-coral-800: #6B2C28;
+  --color-coral-900: #481D1B;
+  --color-coral-950: #2A100F;
+
+  --color-navy-50: #ECEFF3;
+  --color-navy-100: #D2DAE2;
+  --color-navy-200: #A9B8C6;
+  --color-navy-300: #7C90A5;
+  --color-navy-400: #506882;
+  --color-navy-500: #324C68;
+  --color-navy-600: #233D58;
+  --color-navy-700: #1B314C;
+  --color-navy-800: #142537;
+  --color-navy-900: #0D1824;
+  --color-navy-950: #070E16;
+
+  --color-slate-50: #F1F3F5;
+  --color-slate-100: #E2E6EA;
+  --color-slate-200: #C6CDD4;
+  --color-slate-300: #A4AFBA;
+  --color-slate-400: #82909E;
+  --color-slate-500: #5F7081;
+  --color-slate-600: #4E5C6A;
+  --color-slate-700: #3D4753;
+  --color-slate-800: #2C343D;
+  --color-slate-900: #1D2329;
+  --color-slate-950: #121519;
+
+  --color-silver-100: #ECEDEF;
+  --color-silver-200: #D1D4D8;
+  --color-silver-300: #B6BAC0;
+
+  --color-neutral-50: #F9FAFB;
+  --color-paper: #FBFCFD;
+
+  /* Aliases */
+  --rg-bg: var(--color-paper);
+  --rg-bg-2: var(--color-slate-50);
+  --rg-bg-3: var(--color-slate-100);
+  --rg-surface: #ffffff;
+  --rg-ink: var(--color-navy-700);
+  --rg-ink-soft: var(--color-slate-700);
+  --rg-ink-mute: var(--color-slate-600);
+  --rg-ink-subtle: var(--color-slate-500);
+  --rg-line: var(--color-silver-200);
+  --rg-line-soft: var(--color-silver-100);
+  --rg-line-strong: var(--color-slate-300);
+  --rg-accent: var(--color-teal-600);
+  --rg-accent-light: var(--color-teal-400);
+  --rg-accent-subtle: var(--color-teal-50);
+  --rg-accent-deep: var(--color-teal-800);
+  --rg-accent-ink: #ffffff;
+  --rg-accent-2: var(--color-coral-500);
+  --rg-accent-2-light: var(--color-coral-400);
+  --rg-accent-2-subtle: var(--color-coral-50);
+  --rg-accent-2-deep: var(--color-coral-700);
+  --rg-invert-bg: var(--color-teal-900);
+  --rg-invert-bg-2: var(--color-teal-800);
+  --rg-invert-ink: #ffffff;
+  --rg-invert-ink-soft: var(--color-teal-100);
+  --rg-invert-line: rgba(255, 255, 255, 0.16);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-poppins), var(--font-poppins-google), var(--font-avenir), var(--font-nunito), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: JetBrains Mono, monospace;
+  --font-serif: Georgia, serif;
+  --font-display: var(--font-gotham), var(--font-montserrat), "Helvetica Neue", "Arial", sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --spacing-pad-x: clamp(20px, 4vw, 64px);
+  --spacing-section-y: clamp(80px, 12vw, 180px);
+  --spacing-gap: clamp(16px, 2vw, 32px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
