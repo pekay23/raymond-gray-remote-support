@@ -46,7 +46,7 @@ export function Hero() {
           className="max-w-4xl"
         >
           <motion.h1
-            className="font-display font-bold text-4xl md:text-6xl lg:text-7xl text-white leading-tight mb-8 flex flex-wrap gap-x-4 drop-shadow-lg"
+            className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-8 flex flex-wrap gap-x-4 drop-shadow-lg"
           >
             {titleWords.map((word, i) => (
               <motion.span key={i} variants={itemVariants} className="inline-block">
@@ -56,13 +56,13 @@ export function Hero() {
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-xl md:text-2xl text-white/95 font-medium leading-relaxed max-w-2xl mb-6 drop-shadow-md"
+            className="text-lg md:text-xl text-white/95 font-medium leading-relaxed max-w-2xl mb-6 drop-shadow-md"
           >
             {heroCopy.lede}
           </motion.p>
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-white/85 font-medium leading-relaxed max-w-2xl mb-10 drop-shadow-md"
+            className="text-base md:text-lg text-white/85 font-medium leading-relaxed max-w-2xl mb-10 drop-shadow-md"
           >
             {heroCopy.subLede}
           </motion.p>

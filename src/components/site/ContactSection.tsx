@@ -15,11 +15,10 @@ export function ContactSection() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const url = `${process.env.NEXT_PUBLIC_PARENT_API_URL || ""}/api/contact`;
-      const res = await fetch(url, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, source: "Remote Support Site" }),
+        body: JSON.stringify(data),
       });
 
       if (res.ok) {
