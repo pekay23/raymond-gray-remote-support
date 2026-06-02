@@ -33,10 +33,23 @@ export async function POST(request: Request) {
       );
     }
 
-    const res = await fetch(`${parentUrl}/api/contact`, {
+    const res = await fetch(`${parentUrl}/api/webhooks/forms`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...body, source: "Remote Support Site" }),
+      headers: { 
+        "Content-Type": "application/json",
+        "x-api-key": process.env.WEBHOOK_SECRET || ""
+      },
+      body: JSON.stringify({
+        sourceDomain: "remote-support.raymondgray.com",
+        formType: "Contact Inquiry",
+        customerName: body.name || "Anonymous",
+        customerEmail: body.email || null,
+        customerPhone: body.phone || null,
+        payload: {
+          company: body.company || null,
+          message: body.message || null,
+        }
+      }),
     });
 
     const data = await res.json();
