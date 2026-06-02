@@ -8,9 +8,32 @@ export function ContactSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [formLoadedAt, setFormLoadedAt] = useState<number>(0);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    message: "",
+  });
+
   useEffect(() => {
     setFormLoadedAt(Date.now());
+    try {
+      const saved = sessionStorage.getItem("rg_rs_contact_form");
+      if (saved) {
+        setFormData(JSON.parse(saved));
+      }
+    } catch (e) {
+      console.error("Failed to load saved form data", e);
+    }
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("rg_rs_contact_form", JSON.stringify(formData));
+  }, [formData]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +51,8 @@ export function ContactSection() {
 
       if (res.ok) {
         setStatus("success");
+        setFormData({ name: "", email: "", company: "", message: "" });
+        sessionStorage.removeItem("rg_rs_contact_form");
       } else {
         setStatus("error");
       }
@@ -94,19 +119,19 @@ export function ContactSection() {
                   </div>
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-rg-ink-soft mb-1">Full Name</label>
-                    <input required type="text" id="name" name="name" className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
+                    <input required type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-rg-ink-soft mb-1">Work Email</label>
-                    <input required type="email" id="email" name="email" className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
+                    <input required type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-rg-ink-soft mb-1">Company</label>
-                    <input type="text" id="company" name="company" className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
+                    <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all" />
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-rg-ink-soft mb-1">How can we help?</label>
-                    <textarea required id="message" name="message" rows={4} className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all resize-none"></textarea>
+                    <textarea required id="message" name="message" value={formData.message} onChange={handleChange} rows={4} className="w-full px-4 py-2 rounded-md border border-rg-line-soft focus:ring-2 focus:ring-rg-accent focus:border-rg-accent outline-none transition-all resize-none"></textarea>
                   </div>
                   
                   {status === "error" && (
