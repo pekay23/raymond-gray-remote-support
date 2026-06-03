@@ -14,7 +14,7 @@ import { NextResponse } from "next/server";
 // and admin notifications. This proxy is a thin shaping/relay layer.
 // (See SUBDOMAIN_INTAKE_STANDARD.md.)
 const PLATFORM_URL =
-  process.env.NEXT_PUBLIC_PARENT_API_URL || "https://www.raymond-gray.org";
+  process.env.NEXT_PUBLIC_PARENT_API_URL || process.env.NEXT_PUBLIC_API_URL || "https://www.raymond-gray.org";
 
 export async function POST(request: Request) {
   try {
