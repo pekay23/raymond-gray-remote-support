@@ -39,6 +39,7 @@ const poppinsGoogle = PoppinsGoogle({ subsets: ["latin"], weight: ["300", "400",
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://remotesupport.raymond-gray.org"),
   title: "Raymond Gray | Remote Support Services",
   description: "Reliable remote support for SMEs worldwide — spanning back-office administration, customer service operations, and IT helpdesk coverage.",
   openGraph: {

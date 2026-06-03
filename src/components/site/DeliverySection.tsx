@@ -59,12 +59,13 @@ export function DeliverySection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
-              className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-md border border-rg-line-soft"
+              className="relative w-full aspect-video rounded-xl overflow-hidden shadow-md border border-rg-line-soft"
             >
               <Image 
                 src="/images/remote-command-center.png" 
                 alt="Remote IT Command Center" 
                 fill 
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover hover:scale-105 transition-transform duration-700" 
               />
             </motion.div>
