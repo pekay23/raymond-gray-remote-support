@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Raymond Gray Remote Support — Portfolio Summary · Raymond Gray Remote Support</title>
-<link rel="stylesheet" href="./design-tokens.css">
-<link rel="stylesheet" href="./docs.css">
+<link rel="stylesheet" href="design-tokens.css">
+<link rel="stylesheet" href="docs.css">
 </head>
 <body>
 <div class="he-shell he-shell--wide">
@@ -14,35 +14,29 @@
   <a class="he-nav__brand" href="./index.html">Raymond Gray Remote Support <small>docs</small></a>
   <div class="he-nav__links">
     <a href="./index.html">Index</a>
-    <a href="./index.html#overview">Overview</a>
+    
   </div>
 </nav>
 <div class="he-layout">
 <main class="he-main">
 <header>
-  <p class="he-eyebrow">Overview</p>
+  <p class="he-eyebrow">Docs</p>
   <h1 class="he-title">Raymond Gray Remote Support — Portfolio Summary</h1>
   <p class="he-deck">Drop-in copy for your portfolio site.</p>
 </header>
-<hr>
-
-<section class="he-section" id="short-pitch-23-sentences-hero-card">
-  <div class="he-section__num">01 · Short pitch (2–3 sentences, hero card)</div>
-  <h2 class="he-section__title">Short pitch (2–3 sentences, hero card)</h2><p>Raymond Gray Remote Support is a polished, single-page marketing website I designed and built for a Ghana-based remote support services firm serving SME clients across the UK, US, and internationally. The site communicates the company&#39;s full offering — back-office administration, customer service operations, and a structured IT helpdesk tier programme — and feeds qualified leads directly into the Raymond Gray platform via a secure, server-side contact proxy. Built on Next.js 16 + React 19 with Framer Motion and GSAP animations, self-hosted custom fonts, and an animated client ecosystem section powered by a 40+ company logo grid with a looping video background.</p>
-<hr>
-
-<section class="he-section" id="long-description-case-study-body-250-words">
-  <div class="he-section__num">02 · Long description (case study body, ~250 words)</div>
-  <h2 class="he-section__title">Long description (case study body, ~250 words)</h2><p><strong>Raymond Gray needed a credible, client-facing web presence</strong> that matched the quality of their operational delivery. The company provides structured remote support to manufacturing and engineering SMEs — inbox management, VoIP call handling, order tracking, IT helpdesk coverage — but had no dedicated site to communicate that offer to prospective clients or direct them into the inquiry pipeline.</p>
+<hr />
+<section class="he-section" id="short-pitch-23-sentences-hero-card"><div class="he-section__num">01 · Short pitch (2–3 sentences, hero card)</div><h2 class="he-section__title">Short pitch (2–3 sentences, hero card)</h2></section>
+<p>Raymond Gray Remote Support is a polished, single-page marketing website I designed and built for a Ghana-based remote support services firm serving SME clients across the UK, US, and internationally. The site communicates the company's full offering — back-office administration, customer service operations, and a structured IT helpdesk tier programme — and feeds qualified leads directly into the Raymond Gray platform via a secure, server-side contact proxy. Built on Next.js 16 + React 19 with Framer Motion and GSAP animations, self-hosted custom fonts, and an animated client ecosystem section powered by a 40+ company logo grid with a looping video background.</p>
+<hr />
+<section class="he-section" id="long-description-case-study-body-250-words"><div class="he-section__num">02 · Long description (case study body, ~250 words)</div><h2 class="he-section__title">Long description (case study body, ~250 words)</h2></section>
+<p><strong>Raymond Gray needed a credible, client-facing web presence</strong> that matched the quality of their operational delivery. The company provides structured remote support to manufacturing and engineering SMEs — inbox management, VoIP call handling, order tracking, IT helpdesk coverage — but had no dedicated site to communicate that offer to prospective clients or direct them into the inquiry pipeline.</p>
 <p>I built <strong>Raymond Gray Remote Support</strong> as a single-page Next.js 16 (App Router) + React 19 + TypeScript site, deployed as a subdomain (<code>remotesupport.raymond-gray.org</code>) of the wider Raymond Gray platform. The site is animated throughout — Framer Motion drives staggered entrance animations on every section (spring physics, blur-to-clear effects, parallax hero), while GSAP ScrollTrigger powers the client experience cards. A custom <code>LogoCycleGrid</code> component displays 40+ representative client logos over a lazy-loaded looping video background.</p>
-<p>The non-obvious work is in the <strong>integration layer</strong>: the contact form submits same-origin to <code>/api/contact</code>, a thin server-side proxy that relays the payload to the platform&#39;s <code>/api/support-services</code> endpoint. This pattern keeps the platform&#39;s CORS policy strict (production subdomain only) while allowing identical form submissions from localhost during development — the proxy is exempt from the origin lock. Spam protection is layered: a honeypot field, a <code>formLoadedAt</code> timing check, and per-IP rate limiting are all enforced by the platform, with the visitor&#39;s real IP forwarded via <code>x-forwarded-for</code> so limits apply to the customer, not the shared serverless egress IP.</p>
+<p>The non-obvious work is in the <strong>integration layer</strong>: the contact form submits same-origin to <code>/api/contact</code>, a thin server-side proxy that relays the payload to the platform's <code>/api/support-services</code> endpoint. This pattern keeps the platform's CORS policy strict (production subdomain only) while allowing identical form submissions from localhost during development — the proxy is exempt from the origin lock. Spam protection is layered: a honeypot field, a <code>formLoadedAt</code> timing check, and per-IP rate limiting are all enforced by the platform, with the visitor's real IP forwarded via <code>x-forwarded-for</code> so limits apply to the customer, not the shared serverless egress IP.</p>
 <p><strong>All page copy</strong> lives in a single typed module (<code>src/lib/profile-content.ts</code>), making content updates a no-deploy operation for the client.</p>
-<p><strong>Outcome:</strong> the site is live at <code>remotesupport.raymond-gray.org</code> and is the primary digital channel for Raymond Gray&#39;s remote support division, feeding structured inquiries directly into the platform&#39;s support request management workflow.</p>
-<hr>
-
-<section class="he-section" id="bulleted-feature-list-for-the-project-page-sidebar-tags">
-  <div class="he-section__num">03 · Bulleted feature list (for the project page sidebar / tags)</div>
-  <h2 class="he-section__title">Bulleted feature list (for the project page sidebar / tags)</h2><ul>
+<p><strong>Outcome:</strong> the site is live at <code>remotesupport.raymond-gray.org</code> and is the primary digital channel for Raymond Gray's remote support division, feeding structured inquiries directly into the platform's support request management workflow.</p>
+<hr />
+<section class="he-section" id="bulleted-feature-list-for-the-project-page-sidebar-tags"><div class="he-section__num">03 · Bulleted feature list (for the project page sidebar / tags)</div><h2 class="he-section__title">Bulleted feature list (for the project page sidebar / tags)</h2></section>
+<ul>
 <li>Single-page Next.js 16 (App Router) site deployed as a branded subdomain</li>
 <li>Fully animated with Framer Motion 12 (spring physics, staggered fade, blur-to-clear) and GSAP 3 ScrollTrigger</li>
 <li>Parallax hero with animated word-by-word headline reveal and decorative gradient panel</li>
@@ -60,42 +54,48 @@
 <li>Centralised content module — all copy in one typed file, no component changes needed for updates</li>
 <li>Custom self-hosted font stack: Gotham (display), Poppins (body), Avenir Next LT Pro</li>
 </ul>
-<hr>
-
-<section class="he-section" id="tech-stack-one-liner-tag-chips">
-  <div class="he-section__num">04 · Tech stack (one-liner + tag chips)</div>
-  <h2 class="he-section__title">Tech stack (one-liner + tag chips)</h2><p><strong>Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion 12 · GSAP 3 + ScrollTrigger · Radix UI · Lucide React · Bun</strong></p>
-<hr>
-
-<section class="he-section" id="the-answered-template">
-  <div class="he-section__num">05 · The answered template</div>
-  <h2 class="he-section__title">The answered template</h2><blockquote class="he-pull"><p><strong>PROJECT:</strong> Raymond Gray Remote Support
+<hr />
+<section class="he-section" id="tech-stack-one-liner-tag-chips"><div class="he-section__num">04 · Tech stack (one-liner + tag chips)</div><h2 class="he-section__title">Tech stack (one-liner + tag chips)</h2></section>
+<p><strong>Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Framer Motion 12 · GSAP 3 + ScrollTrigger · Radix UI · Lucide React · Bun</strong></p>
+<hr />
+<section class="he-section" id="the-answered-template"><div class="he-section__num">05 · The answered template</div><h2 class="he-section__title">The answered template</h2></section>
+<blockquote class="he-pull">
+<p><strong>PROJECT:</strong> Raymond Gray Remote Support
 <strong>INDUSTRY:</strong> Professional Services / Remote Operations
-<strong>WHAT IT DOES:</strong> A single-page public-facing marketing site for a remote support services firm, communicating their administration, customer service, and IT helpdesk offering to prospective SME clients and feeding qualified inquiries into the parent platform&#39;s support request pipeline.
-<strong>THE PROBLEM:</strong> Raymond Gray had no dedicated web presence for their remote support division. Prospective clients — UK and US-based SMEs — had nowhere to evaluate the full service offering, review IT helpdesk tier options and engagement models, or submit a qualified support inquiry. The company&#39;s existing digital footprint couldn&#39;t communicate the depth and structure of their delivery model.
-<strong>WHAT YOU BUILT:</strong> A polished single-page Next.js 16 + React 19 site with full-page animation (Framer Motion + GSAP ScrollTrigger), a parallax hero, four service sections, an IT tier breakdown table, a delivery model panel, an animated 40+ client logo ecosystem grid with looping video background, client testimonials, and a contact form with two-layer spam protection. A server-side proxy in <code>/api/contact</code> relays submissions to the parent platform&#39;s <code>/api/support-services</code> endpoint, keeping CORS locked and rate limiting platform-enforced. All page copy lives in a single typed module for no-deploy content updates.
-<strong>THE RESULT:</strong> The site is live at <code>remotesupport.raymond-gray.org</code> and is the primary digital channel for Raymond Gray&#39;s remote support division, driving structured inquiries directly into the platform&#39;s support request management workflow.
-<strong>PERMISSION:</strong> It&#39;s mine — I designed and built it as a freelance/contract project for Raymond Gray. The codebase, design system, and contact proxy architecture are mine; the brand, client data, and business content belong to the client. For portfolio use, <strong>show the public marketing surface only</strong> — do not display any form submissions, support request data, or admin-side responses.
+<strong>WHAT IT DOES:</strong> A single-page public-facing marketing site for a remote support services firm, communicating their administration, customer service, and IT helpdesk offering to prospective SME clients and feeding qualified inquiries into the parent platform's support request pipeline.
+<strong>THE PROBLEM:</strong> Raymond Gray had no dedicated web presence for their remote support division. Prospective clients — UK and US-based SMEs — had nowhere to evaluate the full service offering, review IT helpdesk tier options and engagement models, or submit a qualified support inquiry. The company's existing digital footprint couldn't communicate the depth and structure of their delivery model.
+<strong>WHAT YOU BUILT:</strong> A polished single-page Next.js 16 + React 19 site with full-page animation (Framer Motion + GSAP ScrollTrigger), a parallax hero, four service sections, an IT tier breakdown table, a delivery model panel, an animated 40+ client logo ecosystem grid with looping video background, client testimonials, and a contact form with two-layer spam protection. A server-side proxy in <code>/api/contact</code> relays submissions to the parent platform's <code>/api/support-services</code> endpoint, keeping CORS locked and rate limiting platform-enforced. All page copy lives in a single typed module for no-deploy content updates.
+<strong>THE RESULT:</strong> The site is live at <code>remotesupport.raymond-gray.org</code> and is the primary digital channel for Raymond Gray's remote support division, driving structured inquiries directly into the platform's support request management workflow.
+<strong>PERMISSION:</strong> It's mine — I designed and built it as a freelance/contract project for Raymond Gray. The codebase, design system, and contact proxy architecture are mine; the brand, client data, and business content belong to the client. For portfolio use, <strong>show the public marketing surface only</strong> — do not display any form submissions, support request data, or admin-side responses.
 <strong>LINKS:</strong></p>
 <ul>
 <li><strong>Live:</strong> <code>https://remotesupport.raymond-gray.org</code></li>
 <li><strong>GitHub:</strong> <em>(private repo — use a screenshot tour or sanitized mirror for the portfolio)</em></li>
 <li><strong>Screenshots / case study:</strong> <em>[link to a Notion / Framer / read.cv case study with visuals you control]</em></li>
-<li><strong>Parent platform:</strong> <code>https://www.raymond-gray.org</code> <em>(the platform this site&#39;s contact form feeds into)</em></li>
+<li><strong>Parent platform:</strong> <code>https://www.raymond-gray.org</code> <em>(the platform this site's contact form feeds into)</em></li>
 </ul>
-</blockquote><hr>
-
-<section class="he-section" id="variants-you-can-swap-in">
-  <div class="he-section__num">06 · Variants you can swap in</div>
-  <h2 class="he-section__title">Variants you can swap in</h2><h3 id="1-line-tagline">1-line tagline</h3><blockquote><p>A fully animated single-page marketing site for a remote support firm — custom font stack, 40+ client logos, GSAP + Framer Motion animations, and a server-side contact proxy integrating with the parent platform.</p>
-</blockquote><h3 id="2-line-tagline-for-cards">2-line tagline (for cards)</h3><blockquote><p>Next.js 16 subdomain site for Raymond Gray Remote Support. Animated with Framer Motion + GSAP, featuring an IT tier breakdown, 40+ client logo ecosystem, and a server-side contact proxy that feeds structured inquiries into the parent platform.</p>
-</blockquote><h3 id="twitter-x-280">Twitter / X (≤280)</h3><blockquote><p>Built the Raymond Gray Remote Support site: single-page Next.js 16 with Framer Motion + GSAP animations, a 40+ client logo grid over a video background, and a server-side form proxy that keeps CORS locked and routes leads straight into the parent platform. 🖥️</p>
-</blockquote><h3 id="linkedin-post-opener">LinkedIn post opener</h3><blockquote><p>Most &quot;marketing site&quot; projects are a hero, three cards, and a contact form. This one has a server-side contact proxy that bypasses the parent platform&#39;s CORS lock from localhost, a 40+ client logo grid with a lazy-loaded looping video background, an IT helpdesk tier table, and a centralised typed content module so the client can update copy without touching a component. Built on Next.js 16 + Framer Motion + GSAP. 🌍</p>
-</blockquote><hr>
-
-<section class="he-section" id="portfolio-page-section-order-suggestion">
-  <div class="he-section__num">07 · Portfolio-page section order suggestion</div>
-  <h2 class="he-section__title">Portfolio-page section order suggestion</h2><ol>
+</blockquote>
+<hr />
+<section class="he-section" id="variants-you-can-swap-in"><div class="he-section__num">06 · Variants you can swap in</div><h2 class="he-section__title">Variants you can swap in</h2></section>
+<h3 id="1-line-tagline">1-line tagline</h3>
+<blockquote>
+<p>A fully animated single-page marketing site for a remote support firm — custom font stack, 40+ client logos, GSAP + Framer Motion animations, and a server-side contact proxy integrating with the parent platform.</p>
+</blockquote>
+<h3 id="2-line-tagline-for-cards">2-line tagline (for cards)</h3>
+<blockquote>
+<p>Next.js 16 subdomain site for Raymond Gray Remote Support. Animated with Framer Motion + GSAP, featuring an IT tier breakdown, 40+ client logo ecosystem, and a server-side contact proxy that feeds structured inquiries into the parent platform.</p>
+</blockquote>
+<h3 id="twitter-x-280">Twitter / X (≤280)</h3>
+<blockquote>
+<p>Built the Raymond Gray Remote Support site: single-page Next.js 16 with Framer Motion + GSAP animations, a 40+ client logo grid over a video background, and a server-side form proxy that keeps CORS locked and routes leads straight into the parent platform. 🖥️</p>
+</blockquote>
+<h3 id="linkedin-post-opener">LinkedIn post opener</h3>
+<blockquote>
+<p>Most &quot;marketing site&quot; projects are a hero, three cards, and a contact form. This one has a server-side contact proxy that bypasses the parent platform's CORS lock from localhost, a 40+ client logo grid with a lazy-loaded looping video background, an IT helpdesk tier table, and a centralised typed content module so the client can update copy without touching a component. Built on Next.js 16 + Framer Motion + GSAP. 🌍</p>
+</blockquote>
+<hr />
+<section class="he-section" id="portfolio-page-section-order-suggestion"><div class="he-section__num">07 · Portfolio-page section order suggestion</div><h2 class="he-section__title">Portfolio-page section order suggestion</h2></section>
+<ol>
 <li><strong>Hero</strong> — short pitch + screenshot of the animated hero section</li>
 <li><strong>The problem</strong> — 2 bullets: no dedicated web presence, no structured inquiry channel</li>
 <li><strong>What I built</strong> — section-by-section walkthrough with one screenshot each (Services → Tiers → Delivery → Ecosystem → Contact)</li>
@@ -104,16 +104,14 @@
 <li><strong>Stack</strong> — tag chips</li>
 <li><strong>Links</strong> — live site, GitHub (or sanitized tour), parent platform</li>
 </ol>
-<hr>
-
-<section class="he-section" id="things-to-add-once-you-have-them">
-  <div class="he-section__num">08 · Things to add once you have them</div>
-  <h2 class="he-section__title">Things to add once you have them</h2><ul>
-<li><input disabled="" type="checkbox"> A client testimonial quote from Raymond Gray (a one-liner attributed to &quot;Founder&quot; or &quot;Director&quot; is enough)</li>
-<li><input disabled="" type="checkbox"> A screenshot of the animated hero and the ecosystem logo grid (the most visually impressive sections)</li>
-<li><input disabled="" type="checkbox"> A short Loom or GIF showing the Framer Motion staggered animations playing on scroll</li>
-<li><input disabled="" type="checkbox"> Metrics if available (form submissions per month, inquiry conversion rate, etc.)</li>
-<li><input disabled="" type="checkbox"> A &quot;lessons learned&quot; line (e.g. &quot;Why server-to-server proxying beats a shared webhook secret for subdomain form handling&quot;)</li>
+<hr />
+<section class="he-section" id="things-to-add-once-you-have-them"><div class="he-section__num">08 · Things to add once you have them</div><h2 class="he-section__title">Things to add once you have them</h2></section>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>A client testimonial quote from Raymond Gray (a one-liner attributed to &quot;Founder&quot; or &quot;Director&quot; is enough)</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>A screenshot of the animated hero and the ecosystem logo grid (the most visually impressive sections)</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>A short Loom or GIF showing the Framer Motion staggered animations playing on scroll</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>Metrics if available (form submissions per month, inquiry conversion rate, etc.)</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled>A &quot;lessons learned&quot; line (e.g. &quot;Why server-to-server proxying beats a shared webhook secret for subdomain form handling&quot;)</li>
 </ul>
 
 </main>
@@ -137,7 +135,7 @@
 </aside>
 </div>
 <footer class="he-foot">
-  Source · <a href="./../">browse the markdown</a> · rebuild with <code>bun run docs:html</code>
+  Source · <a href="..">browse the markdown</a> · rebuild with <code>bun run docs:html</code>
 </footer>
 </div>
 </body>
