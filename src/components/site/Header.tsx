@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -11,6 +11,19 @@ const navLinks = [
   { name: "IT Tiers", href: "#tiers" },
   { name: "Clients", href: "#clients" },
 ];
+
+const overlayContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.12 },
+  },
+};
+
+const overlayItemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+};
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,7 +56,7 @@ export function Header() {
     };
   }, [isMobileMenuOpen]);
 
-  // Focus trap + Escape-to-close for the mobile drawer
+  // Focus trap + Escape-to-close for the mobile overlay
   useEffect(() => {
     if (!isMobileMenuOpen) return;
 
@@ -117,71 +130,100 @@ export function Header() {
           className={`md:hidden p-2.5 size-10 transition-colors rounded-md ${scrolled ? "text-rg-navy bg-rg-bg-2" : "text-white hover:bg-white/10"}`}
           onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           aria-expanded={isMobileMenuOpen}
-          aria-controls="mobile-menu-drawer"
+          aria-controls="mobile-menu-overlay"
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu Drawer (right slide-over) */}
+      {/* Mobile Menu Overlay (full-screen dark overlay, matching raymond-gray-platform pattern) */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop scrim */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
               onClick={closeMenu}
               aria-hidden="true"
             />
 
-            {/* Drawer panel */}
+            {/* Full-screen overlay panel */}
             <motion.div
               ref={menuRef}
-              key="mobile-menu-drawer"
-              initial={{ opacity: 0, x: "100%" }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30, mass: 1 }}
-              className="fixed inset-y-0 right-0 z-60 bg-white w-[min(85vw,320px)] shadow-2xl flex flex-col opacity-100"
-              id="mobile-menu-drawer"
+              key="mobile-menu-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-50 bg-rg-invert-bg text-rg-invert-ink"
               aria-label="Mobile navigation"
             >
-              <div className="flex items-center justify-between px-6 pt-8 pb-4 border-b border-rg-line-soft">
-                <span className="font-display font-semibold text-rg-navy text-lg tracking-tight">
-                  Navigation
-                </span>
+              {/* Overlay header */}
+              <div className="flex items-center justify-between px-6 pt-12 sm:pt-16 pb-6 sm:pb-8 border-b border-rg-invert-line">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/logos/RaymondgraylogoNoTextNoBG.png"
+                    alt="Raymond Gray"
+                    width={40}
+                    height={40}
+                    className="w-8 h-8 object-contain"
+                    aria-hidden="true"
+                  />
+                  <span className="font-display font-semibold text-sm sm:text-base tracking-tight">
+                    Navigation
+                  </span>
+                </div>
                 <button
                   onClick={closeMenu}
-                  className="p-2 rounded-md text-rg-ink-soft hover:bg-rg-line-soft hover:text-rg-navy transition-colors"
+                  className="p-2 rounded-md hover:bg-white/10 text-rg-invert-ink hover:text-white transition-colors"
                   aria-label="Close menu"
                 >
                   <X size={22} />
                 </button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto px-6 pb-8 space-y-1" aria-label="Main">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={closeMenu}
-                    className="block w-full px-4 py-3.5 text-lg font-display font-medium text-rg-navy hover:text-rg-accent hover:bg-rg-accent-subtle rounded-md transition-colors border-b border-rg-line-soft last:border-0"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </nav>
+              {/* Nav links — staggered slide-up, left-aligned, large text */}
+              <motion.nav
+                variants={overlayContainerVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex-1 overflow-y-auto px-6 py-8"
+                aria-label="Main"
+              >
+                <ol className="list-none p-0 m-0 space-y-2 sm:space-y-4">
+                  {navLinks.map((link, i) => (
+                    <li key={link.href}>
+                      <motion.li
+                        variants={overlayItemVariants}
+                        initial="hidden"
+                        animate="visible"
+                        style={{ transitionDelay: `${i * 80}ms` }}
+                        className="overflow-hidden"
+                      >
+                        <Link
+                          href={link.href}
+                          onClick={closeMenu}
+                          className="block px-4 py-4 text-2xl sm:text-3xl font-display font-medium text-rg-invert-ink hover:text-rg-accent-light transition-colors border-b border-rg-invert-line last:border-0"
+                        >
+                          {link.name}
+                        </Link>
+                      </motion.li>
+                    </li>
+                  )                )}
+                </ol>
+              </motion.nav>
 
-              <div className="p-6 border-t border-rg-line-soft">
+              {/* CTA at bottom */}
+              <div className="p-6 border-t border-rg-invert-line">
                 <Link
                   href="#contact"
                   onClick={closeMenu}
-                  className="w-full flex items-center justify-center px-6 py-3.5 bg-rg-accent text-white rounded-md font-medium text-sm hover:bg-rg-accent-deep transition-colors shadow-sm"
+                  className="w-full flex items-center justify-center px-6 py-4 bg-rg-accent text-rg-accent-ink rounded-md font-medium text-sm hover:bg-rg-accent-deep transition-colors shadow-sm"
                 >
                   Request Support
                 </Link>

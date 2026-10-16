@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useInView } from "framer-motion";
@@ -11,9 +11,19 @@ export function EcosystemSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const isVideoInView = useInView(videoContainerRef, { once: true, margin: "200px" });
+  // Disable autoplay video on mobile (<md) — saves data/battery, autoplay is
+  // often blocked by mobile browsers anyway. Poster still shows.
+  // Kept as state (default false, synced after mount) so SSR and client HTML match
+  // and there is no hydration mismatch on the video element.
+  const [isDesktopVideo] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= 768 : false
+  );
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    // gsap ScrollTrigger is heavy on mobile — only run on tablets/desktop (md+).
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -69,10 +79,10 @@ export function EcosystemSection() {
         style={{ backgroundImage: "url('/logos/logosBG.png')" }}
       >
         {isVideoInView && (
-          <video 
-            autoPlay 
-            loop 
-            muted 
+          <video
+            autoPlay={isDesktopVideo}
+            loop
+            muted
             playsInline
             preload="metadata"
             poster="/logos/logosBG.png"

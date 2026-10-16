@@ -14,6 +14,9 @@ export function ContactSection() {
     company: string;
     message: string;
   }>(() => {
+    if (typeof window === "undefined") {
+      return { name: "", email: "", company: "", message: "" };
+    }
     try {
       const saved = sessionStorage.getItem("rg_rs_contact_form");
       if (saved) return JSON.parse(saved);

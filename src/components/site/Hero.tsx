@@ -26,7 +26,11 @@ export function Hero() {
   };
 
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 1000], [0, 300]);
+  // Parallax is decorative — disable on mobile (<md) to avoid scroll jank,
+  // address-bar interference, and battery drain on phones.
+  const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+  const parallaxY = useTransform(scrollY, [0, 1000], [0, 300]);
+  const y = isDesktop ? parallaxY : 0;
 
   const titleWords = heroCopy.title.split(" ");
 
@@ -50,7 +54,7 @@ export function Hero() {
           >
             {titleWords.map((word, i) => (
               <>
-                <motion.span key={`${i}-word`} variants={itemVariants} className="inline-block">
+                <motion.span key={i} variants={itemVariants} className="inline-block">
                   {word}
                 </motion.span>
                 {(i === 1 || i === 5) && <br className="hidden sm:block" />}

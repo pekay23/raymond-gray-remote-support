@@ -20,15 +20,17 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
 
   const validLogos = useMemo(() => logos.filter((logo) => logo.logoUrl), [logos]);
 
-  // Derive slot count once on mount — no resize listener, no layout thrashing.
-  const slots =
+  // Derive slot count once — server-side default 20, client responsive value.
+  // Initialized lazily so SSR and client HTML match (avoids hydration mismatch).
+  const [slots] = useState(() =>
     typeof window !== "undefined"
       ? window.innerWidth < 640
         ? 4
         : window.innerWidth < 1024
           ? 9
           : 20
-      : 20;
+      : 20
+  );
 
   const baseIndices = useMemo(() => {
     const indices: number[] = [];
@@ -110,7 +112,7 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
         return (
           <div
             key={slot}
-            className="relative flex min-h-[110px] items-center justify-center overflow-hidden p-1 sm:p-2"
+            className="relative flex min-h-27.5 items-center justify-center overflow-hidden p-1 sm:p-2"
           >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div

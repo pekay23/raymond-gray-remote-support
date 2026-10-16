@@ -6,16 +6,13 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   lint-and-build:
+    name: Lint & Build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,13 +25,9 @@ jobs:
           bun-version: 1.4.3
 
       - name: Restore Bun install cache
-        id: cache-bun-install
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-            bun.lockb
+          path: ~/.bun/install/cache
           key: ${{ runner.os }}-bun-install-${{ hashFiles('bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-install-
@@ -43,11 +36,9 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Restore Next.js build cache
-        id: cache-next-build
         uses: actions/cache@v4
         with:
-          path: |
-            .next/cache
+          path: .next/cache
           key: ${{ runner.os }}-next-build-${{ hashFiles('bun.lock') }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-next-build-${{ hashFiles('bun.lock') }}-
@@ -55,20 +46,11 @@ jobs:
       - name: Run ESLint
         run: bun run lint
 
-      - name: Run TypeScript type check
+      - name: Run TypeScript type check + build
         run: bun run build
 
-      - name: Upload build artifacts
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: nextjs-build
-          path: |
-            .next/
-            public/
-          retention-days: 1
-
-  deploy-to-vercel:
+  deploy-production:
+    name: Deploy to Vercel (Production)
     needs: lint-and-build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -79,17 +61,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          name: nextjs-build
-          path: .
+          bun-version: 1.4.3
 
-      - name: Install Vercel CLI
-        run: bun add --global vercel@latest
+      - name: Restore Bun install cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-install-${{ hashFiles('bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Deploy to Vercel (production)
-        run: vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
