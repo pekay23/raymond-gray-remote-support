@@ -1,8 +1,10 @@
 "use client";
 
+import React from "react";
 import { motion, Variants, useScroll, useTransform } from "framer-motion";
 import { heroCopy } from "@/lib/profile-content";
 import Link from "next/link";
+import { useSyncExternalStore } from "react";
 
 export function Hero() {
   const containerVariants: Variants = {
@@ -28,7 +30,16 @@ export function Hero() {
   const { scrollY } = useScroll();
   // Parallax is decorative — disable on mobile (<md) to avoid scroll jank,
   // address-bar interference, and battery drain on phones.
-  const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
+  // Derived via useSyncExternalStore with a server snapshot so SSR and first
+  // client paint render identical markup — no hydration mismatch.
+  const isDesktop = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener("resize", onStoreChange);
+      return () => window.removeEventListener("resize", onStoreChange);
+    },
+    () => window.innerWidth >= 768,
+    () => false
+  );
   const parallaxY = useTransform(scrollY, [0, 1000], [0, 300]);
   const y = isDesktop ? parallaxY : 0;
 
@@ -36,10 +47,22 @@ export function Hero() {
 
   return (
     <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-36 md:pb-32 overflow-hidden bg-rg-navy">
-      {/* Background Image */}
+      {/* Background Image — responsive: webp on mobile, png on desktop */}
       <div
-        className="absolute inset-0 z-0 opacity-60 sm:opacity-40 mix-blend-luminosity"
-        style={{ backgroundImage: "url('/images/hero-bg.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+        className="block sm:hidden absolute inset-0 z-0 opacity-60 sm:opacity-40 mix-blend-luminosity"
+        style={{
+          backgroundImage: "url('/images/webp/hero-bg-mobile.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+      <div
+        className="hidden sm:block absolute inset-0 z-0 opacity-60 sm:opacity-40 mix-blend-luminosity"
+        style={{
+          backgroundImage: "url('/images/hero-bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -52,14 +75,14 @@ export function Hero() {
           <motion.h1
             className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-6 sm:mb-8 flex flex-wrap gap-x-4 drop-shadow-lg"
           >
-            {titleWords.map((word, i) => (
-              <>
-                <motion.span key={i} variants={itemVariants} className="inline-block">
-                  {word}
-                </motion.span>
-                {(i === 1 || i === 5) && <br className="hidden sm:block" />}
-              </>
-            ))}
+          {titleWords.map((word, i) => (
+            <React.Fragment key={i}>
+              <motion.span key={`${i}-word`} variants={itemVariants} className="inline-block">
+                {word}
+              </motion.span>
+              {(i === 1 || i === 5) && <br key={`${i}-br`} className="hidden sm:block" />}
+            </React.Fragment>
+          ))}
           </motion.h1>
           <motion.p
             variants={itemVariants}
