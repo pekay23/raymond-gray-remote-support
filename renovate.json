@@ -1,0 +1,83 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "description": "Auto-merge minor and patch updates",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Major updates require manual approval via PR",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "requiredStatusChecks": ["build"]
+    },
+    {
+      "description": "Group Next.js and related packages",
+      "matchPackageNames": ["next", "eslint-config-next", "@next/*"],
+      "groupName": "next.js ecosystem",
+      "automerge": false
+    },
+    {
+      "description": "Group React and related packages",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "groupName": "react ecosystem",
+      "automerge": false
+    },
+    {
+      "description": "Group Tailwind and related packages",
+      "matchPackageNames": ["tailwindcss", "@tailwindcss/*", "postcss", "tailwind-merge"],
+      "groupName": "tailwind ecosystem",
+      "automerge": true
+    },
+    {
+      "description": "Group Radix UI packages",
+      "matchPackageNames": ["@radix-ui/*"],
+      "groupName": "radix ui",
+      "automerge": true
+    },
+    {
+      "description": "Group TypeScript and ESLint",
+      "matchPackageNames": ["typescript", "eslint", "@typescript-eslint/*", "@eslint/*"],
+      "groupName": "typescript and eslint",
+      "automerge": false
+    },
+    {
+      "description": "Group Upstash packages",
+      "matchPackageNames": ["@upstash/*"],
+      "groupName": "upstash",
+      "automerge": true
+    }
+  ],
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 2,
+  "stabilityDays": 2,
+  "timezone": "UTC",
+  "schedule": ["before 5am on monday"],
+  "semanticCommits": "disabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "rebaseWhen": "behind-base-branch",
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 4am on sunday"]
+  },
+  "platform": "github",
+  "prCreation": "not-pending",
+  "disableMajorSemver": false,
+  "autodetectPlatform": true,
+  "dependencyDashboard": true,
+  "major": {
+    "automerge": false
+  },
+  "minor": {
+    "automerge": true
+  },
+  "patch": {
+    "automerge": true
+  }
+}

@@ -37,10 +37,10 @@ export function EcosystemSection() {
   }, []);
 
   return (
-    <section id="clients" ref={sectionRef} className="py-24 bg-rg-bg-2 border-t border-rg-line-soft">
+    <section id="clients" ref={sectionRef} className="py-20 sm:py-28 lg:py-32 bg-rg-bg-2 border-t border-rg-line-soft">
       <div className="container mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-rg-navy mb-4">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl text-rg-navy mb-4">
             Experience Profile & Ecosystem
           </h2>
           <p className="text-rg-ink-soft text-lg leading-relaxed">
@@ -48,13 +48,13 @@ export function EcosystemSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
           {experienceProfile.map((profile, i) => (
-            <div key={i} className="client-fade bg-white p-8 rounded-xl border border-rg-line-soft shadow-sm hover:border-rg-accent transition-colors">
-              <h3 className="font-display font-semibold text-xl text-rg-navy mb-4">
+            <div key={i} className="client-fade bg-white p-6 sm:p-8 rounded-xl border border-rg-line-soft shadow-sm hover:border-rg-accent transition-colors">
+              <h3 className="font-display font-semibold text-xl sm:text-2xl text-rg-navy mb-3 sm:mb-4">
                 {profile.client}
               </h3>
-              <p className="text-sm text-rg-ink-soft leading-relaxed">
+              <p className="text-sm sm:text-base text-rg-ink-soft leading-relaxed">
                 {profile.scope}
               </p>
             </div>
@@ -65,7 +65,7 @@ export function EcosystemSection() {
 
       <div 
         ref={videoContainerRef}
-        className="w-full relative py-16 mt-16 border-y border-rg-line-soft overflow-hidden bg-cover bg-center"
+        className="w-full relative py-12 sm:py-16 mt-16 sm:mt-20 border-y border-rg-line-soft overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: "url('/logos/logosBG.png')" }}
       >
         {isVideoInView && (
@@ -73,17 +73,16 @@ export function EcosystemSection() {
             autoPlay 
             loop 
             muted 
-            playsInline 
+            playsInline
+            preload="metadata"
             poster="/logos/logosBG.png"
             className="absolute inset-0 w-full h-full object-cover z-0 opacity-100"
           >
             <source src="/logos/logosBGVideo.mp4" type="video/mp4" />
           </video>
         )}
-        <div className="relative z-10 px-6">
-          <div className="client-grid mx-auto w-full max-w-[100vw] sm:max-w-7xl">
-            <LogoCycleGrid logos={representativeList} />
-          </div>
+        <div className="client-grid mx-auto w-full max-w-full sm:max-w-7xl">
+          <LogoCycleGrid logos={representativeList} />
         </div>
       </div>
     </section>

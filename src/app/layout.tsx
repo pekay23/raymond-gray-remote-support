@@ -74,6 +74,13 @@ export const metadata: Metadata = {
   manifest: '/favicon/site.webmanifest',
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -82,6 +89,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${gotham.variable} ${poppins.variable} ${avenir.variable} ${montserrat.variable} ${poppinsGoogle.variable} ${nunito.variable} scroll-smooth`}>
       <body className="antialiased text-rg-ink bg-rg-bg font-sans">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only absolute z-50 left-4 top-4 px-4 py-2 bg-white text-rg-navy rounded-md font-medium transition-all transform -translate-y-[200%] focus:translate-y-0"
+        >
+          Skip to main content
+        </a>
         {children}
         <BackToTop />
       </body>

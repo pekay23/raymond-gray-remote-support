@@ -15,67 +15,39 @@ type LogoCycleGridProps = {
   className?: string;
 };
 
-type GridSize = {
-  columns: number;
-  rows: number;
-};
-
-function getGridSize(): GridSize {
-  if (typeof window === "undefined") {
-    return { columns: 5, rows: 4 };
-  }
-
-  if (window.matchMedia("(min-width: 1280px)").matches) {
-    return { columns: 5, rows: 4 };
-  }
-
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    return { columns: 4, rows: 4 };
-  }
-
-  return { columns: 2, rows: 3 };
-}
-
 export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
   const prefersReducedMotion = useReducedMotion();
-  const [grid, setGrid] = useState<GridSize>(() => getGridSize());
-  
+
   const validLogos = useMemo(() => logos.filter((logo) => logo.logoUrl), [logos]);
-  const slots = grid.columns * grid.rows;
 
-  const [visibleIndices, setVisibleIndices] = useState<number[]>([]);
+  // Derive slot count once on mount — no resize listener, no layout thrashing.
+  const slots =
+    typeof window !== "undefined"
+      ? window.innerWidth < 640
+        ? 4
+        : window.innerWidth < 1024
+          ? 9
+          : 20
+      : 20;
 
-  useEffect(() => {
-    const onResize = () => setGrid(getGridSize());
-
-    onResize();
-    window.addEventListener("resize", onResize);
-
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  useEffect(() => {
-    setVisibleIndices((current) => {
-      if (current.length === slots) return current;
-      if (current.length > slots) return current.slice(0, slots);
-
-      const next = [...current];
-      let nextUnused = 0;
-
-      while (next.length < slots) {
-        while (next.includes(nextUnused) && nextUnused < validLogos.length) {
-          nextUnused++;
-        }
-        if (nextUnused < validLogos.length) {
-          next.push(nextUnused);
-        } else {
-          // Fallback if we somehow run out of unique logos
-          next.push(Math.floor(Math.random() * validLogos.length));
-        }
+  const baseIndices = useMemo(() => {
+    const indices: number[] = [];
+    let nextUnused = 0;
+    while (indices.length < slots) {
+      while (indices.includes(nextUnused) && nextUnused < validLogos.length) {
+        nextUnused++;
       }
-      return next;
-    });
+      if (nextUnused < validLogos.length) {
+        indices.push(nextUnused);
+      } else {
+        // Deterministic fallback index (avoids impure Math.random during render)
+        indices.push(nextUnused % validLogos.length);
+      }
+    }
+    return indices;
   }, [slots, validLogos.length]);
+
+  const [visibleIndices, setVisibleIndices] = useState<number[]>(baseIndices);
 
   useEffect(() => {
     if (prefersReducedMotion || validLogos.length <= slots) {
@@ -85,14 +57,14 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
     const interval = window.setInterval(() => {
       setVisibleIndices((current) => {
         const next = [...current];
-        
+
         // Find available logos that are not currently visible
         const availableIndices = validLogos
           .map((_, i) => i)
           .filter((i) => !current.includes(i));
-          
+
         if (availableIndices.length === 0) return current;
-        
+
         // Pick 2 random slots to change
         const possibleSlots = Array.from({ length: slots }, (_, i) => i);
         // shuffle slots
@@ -100,26 +72,26 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
           const j = Math.floor(Math.random() * (i + 1));
           [possibleSlots[i], possibleSlots[j]] = [possibleSlots[j], possibleSlots[i]];
         }
-        
+
         const numToChange = Math.min(2, slots, availableIndices.length);
         const slotsToChange = possibleSlots.slice(0, numToChange);
-        
+
         // Pick random available logos
         for (let i = availableIndices.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
         }
-        
+
         for (let i = 0; i < numToChange; i++) {
           next[slotsToChange[i]] = availableIndices[i];
         }
-        
+
         return next;
       });
     }, 5000); // Increased time to 5s
 
     return () => window.clearInterval(interval);
-  }, [prefersReducedMotion, slots, validLogos.length]);
+  }, [prefersReducedMotion, slots, validLogos]);
 
   if (validLogos.length === 0 || visibleIndices.length === 0) {
     return null;
@@ -127,10 +99,10 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
 
   return (
     <div
-      className={cn("grid gap-6 sm:gap-8", className)}
+      className={cn("grid gap-4 sm:gap-6 lg:gap-8", className)}
       style={{
-        gridTemplateColumns: `repeat(${grid.columns}, minmax(0, 1fr))`,
-        gridTemplateRows: `repeat(${grid.rows}, minmax(140px, 1fr))`,
+        gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+        gridAutoRows: "110px",
       }}
     >
       {visibleIndices.map((logoIndex, slot) => {
@@ -138,7 +110,7 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
         return (
           <div
             key={slot}
-            className="relative flex min-h-[140px] items-center justify-center overflow-hidden p-2"
+            className="relative flex min-h-[110px] items-center justify-center overflow-hidden p-1 sm:p-2"
           >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
@@ -152,7 +124,7 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
                   stiffness: 300,
                   damping: 25,
                   mass: 1,
-                  delay: Math.random() * 0.2, // Slight random stagger if both animate together
+                  delay: slot * 0.05, // Deterministic stagger by slot position
                 }}
               >
                 {logo?.logoUrl ? (
@@ -160,37 +132,18 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
                     <Image
                       src={logo.logoUrl}
                       alt={`${logo.name} logo`}
-                      width={240}
-                      height={96}
-                      sizes="(min-width: 1280px) 240px, (min-width: 768px) 200px, 160px"
-                      className={cn(
-                        "w-auto max-h-16 sm:max-h-20 max-w-full object-contain opacity-90 transition-opacity duration-150 hover:opacity-100",
-                        [
-                          "/logos/as-mfg.jpg",
-                        ].includes(logo.logoUrl || "") && "scale-150",
-                        [
-                          "/logos/rs-machining.png",
-                          "/logos/donaldson.png",
-                          "/logos/ch-machine.png",
-                          "/logos/lansair.PNG",
-                          "/logos/aero-bending.png",
-                          "/logos/meggitt.png",
-                          "/logos/thomas-cnc.png",
-                        ].includes(logo.logoUrl || "") && "scale-[2]",
-                        [
-                          "/logos/safran.png",
-                          "/logos/absolute-technologies.png",
-                          "/logos/kurt.png",
-                        ].includes(logo.logoUrl || "") && "scale-[2.5]"
-                      )}
+                      width={160}
+                      height={64}
+                      sizes="(max-width: 640px) 120px, (max-width: 1024px) 180px, 240px"
+                      className="w-auto max-h-12 sm:max-h-16 max-w-full object-contain opacity-90 transition-opacity duration-150 hover:opacity-100"
                       style={{ width: "auto", height: "auto" }}
                     />
-                    <span className="text-sm sm:text-base text-black text-center font-bold text-wrap w-full px-1 drop-shadow-sm leading-tight mt-2 relative z-10">
+                    <span className="text-xs sm:text-sm text-black text-center font-bold text-wrap w-full px-1 drop-shadow-sm leading-tight mt-2">
                       {logo.name}
                     </span>
                   </>
                 ) : (
-                  <span className="text-center text-lg sm:text-xl font-bold text-black drop-shadow-sm">
+                  <span className="text-center text-xs sm:text-sm font-bold text-black drop-shadow-sm">
                     {logo?.name}
                   </span>
                 )}

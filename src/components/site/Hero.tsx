@@ -27,17 +27,17 @@ export function Hero() {
 
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 300]);
-  
+
   const titleWords = heroCopy.title.split(" ");
 
   return (
-    <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 overflow-hidden bg-rg-navy">
+    <section className="relative pt-20 pb-16 sm:pt-28 sm:pb-20 md:pt-36 md:pb-32 overflow-hidden bg-rg-navy">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 z-0 opacity-40 mix-blend-luminosity"
+      <div
+        className="absolute inset-0 z-0 opacity-60 sm:opacity-40 mix-blend-luminosity"
         style={{ backgroundImage: "url('/images/hero-bg.png')", backgroundSize: "cover", backgroundPosition: "center" }}
       />
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           variants={containerVariants}
@@ -46,37 +46,40 @@ export function Hero() {
           className="max-w-4xl"
         >
           <motion.h1
-            className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-8 flex flex-wrap gap-x-4 drop-shadow-lg"
+            className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight mb-6 sm:mb-8 flex flex-wrap gap-x-4 drop-shadow-lg"
           >
             {titleWords.map((word, i) => (
-              <motion.span key={i} variants={itemVariants} className="inline-block">
-                {word}
-              </motion.span>
+              <>
+                <motion.span key={`${i}-word`} variants={itemVariants} className="inline-block">
+                  {word}
+                </motion.span>
+                {(i === 1 || i === 5) && <br className="hidden sm:block" />}
+              </>
             ))}
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-white/95 font-medium leading-relaxed max-w-2xl mb-6 drop-shadow-md"
+            className="text-lg sm:text-xl text-white/95 font-medium leading-relaxed max-w-full sm:max-w-2xl mb-6 drop-shadow-md"
           >
             {heroCopy.lede}
           </motion.p>
           <motion.p
             variants={itemVariants}
-            className="text-base md:text-lg text-white/85 font-medium leading-relaxed max-w-2xl mb-10 drop-shadow-md"
+            className="text-base sm:text-lg text-white/85 font-medium leading-relaxed max-w-full sm:max-w-2xl mb-8 sm:mb-10 drop-shadow-md"
           >
             {heroCopy.subLede}
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 sm:gap-4 w-full sm:w-auto">
             <Link
               href="#services"
-              className="px-8 py-4 bg-rg-navy text-white rounded-md font-medium hover:bg-rg-accent-deep transition-colors text-center"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-rg-navy text-white rounded-md font-medium hover:bg-rg-accent-deep transition-colors text-center"
             >
               Explore Services
             </Link>
             <Link
               href="#contact"
-              className="px-8 py-4 bg-white border border-rg-line-strong text-rg-navy rounded-md font-medium hover:bg-rg-bg-2 transition-colors text-center"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-white border border-rg-line-strong text-rg-navy rounded-md font-medium hover:bg-rg-bg-2 transition-colors text-center"
             >
               Request Support
             </Link>
@@ -85,9 +88,9 @@ export function Hero() {
       </div>
 
       {/* Decorative background element */}
-      <motion.div 
+      <motion.div
         style={{ y }}
-        className="absolute right-0 top-0 w-1/3 h-[120%] bg-linear-to-l from-rg-accent-subtle to-transparent opacity-50 z-0 pointer-events-none" 
+        className="absolute right-0 top-0 w-1/3 h-[120%] bg-linear-to-l from-rg-accent-subtle to-transparent opacity-50 z-0 pointer-events-none"
       />
     </section>
   );
