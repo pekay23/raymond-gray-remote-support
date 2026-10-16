@@ -1,0 +1,11 @@
+# Code owners — require review from the repo owner for all changes
+* @pekay23
+
+# CI pipeline files require owner review
+.github/ @pekay23
+renovate.json @pekay23
+vercel.json @pekay23
+
+# Dependency changes require owner review
+package.json @pekay23
+bun.lock @pekay23
