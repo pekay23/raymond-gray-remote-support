@@ -3,11 +3,8 @@ node_modules
 out
 dist
 *.tsbuildinfo
-.env
-.env*.local
-!.env.example
-.DS_Store
-
-.vercel
 .env*
 !.env.example
+.vercel
+.DS_Store
+results/verify/
