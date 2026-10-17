@@ -43,7 +43,7 @@ const viewports = [
     console.log("Saved mobile-menu-open.png");
 
     // Verify links are visible in the drawer
-    const links = page.locator("nav[aria-label='Main'] a");
+    const links = page.locator("nav[aria-label='Mobile navigation'] a");
     const count = await links.count();
     console.log(`Mobile drawer visible links: ${count}`);
     for (let i = 0; i < count; i++) {

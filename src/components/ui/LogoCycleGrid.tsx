@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 
 type LogoItem = {
@@ -20,16 +20,16 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
 
   const validLogos = useMemo(() => logos.filter((logo) => logo.logoUrl), [logos]);
 
-  // Derive slot count once — server-side default 20, client responsive value.
-  // Initialized lazily so SSR and client HTML match (avoids hydration mismatch).
-  const [slots] = useState(() =>
-    typeof window !== "undefined"
-      ? window.innerWidth < 640
-        ? 4
-        : window.innerWidth < 1024
-          ? 9
-          : 20
-      : 20
+  // Server-safe default (18 desktop slots). Client derives from window via
+  // useSyncExternalStore so SSR and first client paint render identical markup
+  // — no hydration mismatch, no setState-in-effect.
+  const slots = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener("resize", onStoreChange);
+      return () => window.removeEventListener("resize", onStoreChange);
+    },
+    () => window.innerWidth < 640 ? 4 : window.innerWidth < 1024 ? 9 : 18,
+    () => 18
   );
 
   const baseIndices = useMemo(() => {
@@ -101,23 +101,20 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
 
   return (
     <div
-      className={cn("grid gap-4 sm:gap-6 lg:gap-8", className)}
-      style={{
-        gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
-        gridAutoRows: "110px",
-      }}
+      className={cn("grid gap-4 sm:gap-6 lg:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6", className)}
+      style={{ gridAutoRows: "auto" }}
     >
       {visibleIndices.map((logoIndex, slot) => {
         const logo = validLogos[logoIndex];
         return (
           <div
             key={slot}
-            className="relative flex min-h-27.5 items-center justify-center overflow-hidden p-1 sm:p-2"
+            className="relative flex flex-col items-center justify-center overflow-hidden p-2 sm:p-3 min-h-35 sm:min-h-42.5 lg:min-h-50"
           >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
                 key={`${slot}-${logo?.name}`}
-                className="absolute inset-0 flex flex-col items-center justify-center p-2 gap-2"
+                className="absolute inset-0 flex flex-col items-center justify-center p-1 sm:p-1.5 gap-2"
                 initial={prefersReducedMotion ? false : { opacity: 0, y: -20, scale: 0.95 }}
                 animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 exit={prefersReducedMotion ? undefined : { opacity: 0, y: 20, scale: 0.95 }}
@@ -137,15 +134,15 @@ export function LogoCycleGrid({ logos, className }: LogoCycleGridProps) {
                       width={160}
                       height={64}
                       sizes="(max-width: 640px) 120px, (max-width: 1024px) 180px, 240px"
-                      className="w-auto max-h-12 sm:max-h-16 max-w-full object-contain opacity-90 transition-opacity duration-150 hover:opacity-100"
+                      className="w-auto max-h-10 sm:max-h-12 lg:max-h-14 max-w-full object-contain opacity-90 transition-opacity duration-150 hover:opacity-100"
                       style={{ width: "auto", height: "auto" }}
                     />
-                    <span className="text-xs sm:text-sm text-black text-center font-bold text-wrap w-full px-1 drop-shadow-sm leading-tight mt-2">
+                    <span className="text-xs sm:text-sm font-bold text-black text-center leading-tight line-clamp-2 mt-1 sm:mt-2 px-1 sm:px-1.5 drop-shadow-sm w-full">
                       {logo.name}
                     </span>
                   </>
                 ) : (
-                  <span className="text-center text-xs sm:text-sm font-bold text-black drop-shadow-sm">
+                  <span className="text-center text-xs sm:text-sm font-bold text-black drop-shadow-sm line-clamp-2 w-full px-1 sm:px-1.5">
                     {logo?.name}
                   </span>
                 )}
